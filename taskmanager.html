@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dynamic Task Manager</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+  <h1 class="text-3xl font-bold mb-6">Dynamic Task Manager</h1>
+  <div class="w-full max-w-md">
+    <div class="flex items-center mb-4">
+      <input id="taskInput" type="text" placeholder="Enter your task"
+        class="flex-1 px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+      <button id="addTaskButton" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-r-md hover:bg-blue-600">
+        Add Task
+      </button>
+    </div>
+    <ul id="taskList" class="space-y-4"></ul>
+  </div>
+
+  <script>
+    const taskInput = document.getElementById('taskInput');
+    const addTaskButton = document.getElementById('addTaskButton');
+    const taskList = document.getElementById('taskList');
+
+    addTaskButton.addEventListener('click', function () {
+      const task = taskInput.value.trim();
+      if (task) {
+        const listItem = document.createElement('li');
+        listItem.className = "flex justify-between items-center p-4 bg-white shadow rounded-md";
+
+        const taskText = document.createElement('span');
+        taskText.textContent = task;
+
+        const buttonGroup = document.createElement('div');
+        buttonGroup.className = "flex space-x-2";
+
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.className = "px-3 py-1 bg-orange-500 text-white rounded hover:bg-orange-600";
+        editButton.addEventListener('click', function () {
+          const newTask = prompt('Edit your task:', taskText.textContent);
+          if (newTask !== null && newTask.trim() !== '') {
+            taskText.textContent = newTask.trim();
+          }
+        });
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.className = "px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600";
+        deleteButton.addEventListener('click', function () {
+          taskList.removeChild(listItem);
+        });
+
+        buttonGroup.appendChild(editButton);
+        buttonGroup.appendChild(deleteButton);
+
+        listItem.appendChild(taskText);
+        listItem.appendChild(buttonGroup);
+        taskList.appendChild(listItem);
+
+        taskInput.value = '';
+      }
+    });
+  </script>
+</body>
+
+</html>
